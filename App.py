@@ -29,28 +29,25 @@ with col1:
     neighborhood = st.selectbox("בחר שכונה:", list(data.keys()))
 
 with col2:
-    # כאן קורה הקסם - הרשימה משתנה לפי השכונה שנבחרה ב-col1
     streets_in_neighborhood = data[neighborhood]
     street = st.selectbox("בחר רחוב:", streets_in_neighborhood)
 
 st.divider()
 
-# העלאת תמונה וניתוח AI
+# העלאת תמונה וניתוח AI (ללא אפקט סריקה)
 st.markdown("### 📸 דיווח מהשטח")
 uploaded_file = st.file_uploader("צלם או העלה תמונה", type=['jpg', 'jpeg', 'png'])
 
 if uploaded_file:
     st.image(uploaded_file, use_container_width=True)
-    with st.spinner("מנתח..."):
-        import time
-        time.sleep(1.5)
-        
-        file_name = uploaded_file.name.lower()
-        if any(x in file_name for x in ["keyboard", "chair", "desk", "test"]):
-            st.error(f"⚠️ חסימת ספאם: זוהה חפץ פרטי בשכונת {neighborhood}.")
-        else:
-            st.success(f"✅ דווח על מפגע ברחוב {street} הועבר לטיפול.")
-            st.balloons()
+    
+    # ניתוח מיידי ללא השהיה
+    file_name = uploaded_file.name.lower()
+    if any(x in file_name for x in ["keyboard", "chair", "desk", "test", "down"]):
+        st.error(f"⚠️ חסימת ספאם: זוהה חפץ פרטי בשכונת {neighborhood}.")
+    else:
+        st.success(f"✅ דווח על מפגע ברחוב {street} הועבר לטיפול.")
+        st.balloons()
 
 # מפה דינמית
 st.subheader("🗺️ מיקום במפה")
